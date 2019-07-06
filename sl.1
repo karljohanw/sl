@@ -5,11 +5,20 @@
 .\"
 .TH SL 1 "March 31, 2014"
 .SH NAME
-sl \- cure your bad habit of mistyping
+sl \- cure your bad habit of mistyping. Patched long version (made customizable!)
 .SH SYNOPSIS
 .B sl
 [
-.B \-alFc
+.B \-alFcCRed
+]
+[
+.B -L\fINUM\fB
+]
+[
+.B -C\fINUM\fB
+]
+[
+.B -W\fINUM\fB
 ]
 .SH DESCRIPTION
 .B sl
@@ -27,6 +36,27 @@ It flies like the galaxy express 999.
 .TP
 .B \-c
 C51 appears instead of D51.
+.TP
+.B \-C
+A gated level cross appears.
+.TP
+.B \-R
+The train will turn back in the other direction!
+.TP
+.B \-e
+Evil mode: will not break for any signals!
+.TP
+.B \-d
+People will dance on the roof (unless there is an accident)!
+.TP
+.B \-L\fINUM\fB
+Show \fINUM\fR locomotives (defaults to 1).
+.TP
+.B \-N\fINUM\fB
+Show a train with \fINUM\fR cars (defaults to 0).
+.TP
+.B \-W\fINUM\fB
+Sleep for \fINUM\fR milliseconds (defaults to a random number between 5 and 40).
 .PP
 .SH SEE ALSO
 .BR ls (1)

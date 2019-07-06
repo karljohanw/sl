@@ -148,3 +148,92 @@
 #define C51WH12 "------'|oOo|=[]=-      ||      ||      |  ||=======_|__"
 #define C51WH13 "/~\\____|___|/~\\_|  O=======O=======O   |__|+-/~\\_|     "
 #define C51WH14 "\\_/         \\_/  \\____/  \\____/  \\____/      \\_/       "
+
+#define PASSLENGTH 88
+
+#define PASS01 "          _____  _____  _____  _____  _____  _____  _____  _____  _____  _____           "
+#define PASS02 " _________|___|__|___|__|___|__|___|__|___|__|___|__|___|__|___|__|___|__|___|_________  "
+#define PASS03 "  | ____  _____  _____  _____  _____  _____  _____  _____  _____  _____  _____  ____ |   "
+#define PASS04 "  | |  |  |   |  |   |  |   |  |   |  |   |  |   |  |   |  |   |  |   |  |   |  |  | |   "
+#define PASS05 "  | |  |  |___|  |___|  |___|  |___|  |___|  |___|  |___|  |___|  |___|  |___|  |  | |   "
+#define PASS06 "  | |  |                                                                        |  | |   "
+#define PASS07 "  | |  |                                   @@                                   |  | |   "
+#define PASS08 "__|_|__|________________________________________________________________________|__|_|__ "
+#define PASS09 "\\==|_/_\\____/_\\_|  |______|Z          +--|_________________|------+    |_/_\\____/_\\_|==/ "
+#define PASS10 "     \\_/    \\_/                                       +++~~              \\_/    \\_/      "
+
+#define PASSDEL "                                                                                         "
+
+#define LPASSLENGTH 88
+
+#define LPASS01 "          _____  _____  _____  _____  _____  _____  _____  _____  _____  _____           "
+#define LPASS02 " _________|___|__|___|__|___|__|___|__|___|__|___|__|___|__|___|__|___|__|___|________   "
+#define LPASS03 "  | ____  _____  _____  _____  _____  _____  _____  _____  _____  _____  ____   _____|   "
+#define LPASS04 "  | |  |  |   |  |   |  |   |  |   |  |   |  |   |  |   |  |   |  |   |  |  |   |   |    "
+#define LPASS05 "  | |  |  |___|  |___|  |___|  |___|  |___|  |___|  |___|  |___|  |___|  |  |   |   |    "
+#define LPASS06 "  | |  |                                                                 |  |   |___|    "
+#define LPASS07 "  | |  |                                   @@                            |  |   |_|_|    "
+#define LPASS08 "__|_|__|_________________________________________________________________|__|___|_|_|___ "
+#define LPASS09 "\\==|_/_\\____/_\\_|  |______|XX                    +-|_______|------+    |_/_\\____/_\\_|==/ "
+#define LPASS10 "     \\_/    \\_/                                                          \\_/    \\_/      "
+
+#define LPASSDEL "                                                                                         "
+
+#define CROS001 ""
+#define CROS002 ""
+#define CROS003 "-_||_-"
+#define CROS004  "_><_"
+#define CROS005 "- || -"
+#define CROS006   "||"
+#define CROS007   "||"
+#define CROS008   "||"
+#define CROS009   "||"
+#define CROS010 "\\&||~"
+
+static int cros0l[] = {0, 0, 0, 1, 0, 2, 2, 2, 2, 0};
+
+#define CROS101 " |                  "
+#define CROS102 " |                  "
+#define CROS103 " |                  "
+#define CROS104 " |                  "
+#define CROS105 " |                  "
+#define CROS106 " |                  "
+#define CROS107 " |                  "
+#define CROS108 " |                  "
+#define CROS109 "_|_                 "
+#define CROS110 "|||                 "
+
+#define CROS201 "          /         "
+#define CROS202 "         /          "
+#define CROS203 "        /           "
+#define CROS204 "       /            "
+#define CROS205 "      /             "
+#define CROS206 "     /              "
+#define CROS207 "    /               "
+#define CROS208 "   /                "
+#define CROS209 "__/                 "
+#define CROS210 "|/|                 "
+
+#define CROS301 "                    "
+#define CROS302 "                    "
+#define CROS303 "                    "
+#define CROS304 "                    "
+#define CROS305 "                    "
+#define CROS306 "                    "
+#define CROS307 "                    "
+#define CROS308 "                    "
+#define CROS309 "___"
+#define CROS310 "|-+-----------------"
+
+static char *cros0[D51HEIGHT]
+= {CROS001, CROS002, CROS003, CROS004, CROS005,
+   CROS006, CROS007, CROS008, CROS009, CROS010};
+static char *cros1[D51HEIGHT]
+= {CROS101, CROS102, CROS103, CROS104, CROS105,
+   CROS106, CROS107, CROS108, CROS109, CROS110};
+static char *cros2[D51HEIGHT]
+= {CROS201, CROS202, CROS203, CROS204, CROS205,
+   CROS206, CROS207, CROS208, CROS209, CROS210};
+static char *cros3[D51HEIGHT]
+= {CROS301, CROS302, CROS303, CROS304, CROS305,
+   CROS306, CROS307, CROS308, CROS309, CROS310};
