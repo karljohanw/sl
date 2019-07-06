@@ -55,8 +55,10 @@ void add_fdancer_r(int y, int x);
 void add_mdancer_r(int y, int x);
 int add_C51(int x);
 int add_D51(int x);
+int add_TGV(int x);
 int add_C51_r(int x);
 int add_D51_r(int x);
+int add_TGV_r(int x);
 int add_sl(int x, int cars);
 int add_sl_r(int x, int cars);
 int add_train(int (*loc_func)(int), int locs, int cars, int loc_len, int car_len, int loc_h, int x);
@@ -66,9 +68,11 @@ int add_locomotive_r(int (*func)(int), int len, int no, int x);
 int add_cars(int start, int len, int no, int h, int x, int err);
 int add_car(int x, int i, int i_diff);
 int add_last_car(int x, int i, int i_diff);
+int add_vagoon(int x, int i_diff);
 int add_cars_r(int start, int len, int no, int h, int x, int err);
 int add_car_r(int x, int i, int i_diff);
 int add_last_car_r(int x, int i, int i_diff);
+int add_vagoon_r(int x, int i_diff);
 void option(char *str);
 int my_mvaddstr(int y, int x, char *str);
 int my_mvaddstr_r(int y, int x, char *str);
@@ -89,6 +93,7 @@ int CROSS     = 0;
 int ONEDIREC  = 1;
 int EVIL      = 0;
 int DISCO     = 0;
+int TGV       = 0;
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -157,6 +162,7 @@ void option(char *str)
             case 'R': ONEDIREC = 0; break;
             case 'e': EVIL     = 1; break;
             case 'D': DISCO    = 1; break;
+            case 'G': TGV      = 1; break;
             default:                break;
         }
     }
@@ -209,6 +215,9 @@ int main(int argc, char *argv[])
         else if (C51 == 1) {
             if (add_train(add_C51, LOCOMOTIVES, CARS, C51LENGTH-2, PASSLENGTH, C51HEIGHT, x) == ERR) break;
         }
+        else if (TGV == 1) {
+            if (add_train(add_TGV, LOCOMOTIVES, CARS, TGVLENGTH, TGVLENGTH, TGVHEIGHT, x) == ERR) break;
+        }
         else {
             if (add_train(add_D51, LOCOMOTIVES, CARS, D51LENGTH-2, PASSLENGTH, D51HEIGHT, x) == ERR) break;
         }
@@ -231,6 +240,9 @@ int main(int argc, char *argv[])
         }
         else if (C51 == 1) {
             if (add_train_r(add_C51_r, LOCOMOTIVES, CARS, C51LENGTH-2, PASSLENGTH, C51HEIGHT, x) == ERR) break;
+        }
+        else if (TGV == 1) {
+            if (add_train_r(add_TGV_r, LOCOMOTIVES, CARS, TGVLENGTH, TGVLENGTH, TGVHEIGHT, x) == ERR) break;
         }
         else {
             if (add_train_r(add_D51_r, LOCOMOTIVES, CARS, D51LENGTH-2, PASSLENGTH, D51HEIGHT, x) == ERR) break;
@@ -267,7 +279,9 @@ int add_locomotive(int (*func)(int), int len, int no, int x) {
 int add_cars(int start, int len, int no, int h, int x, int err) {
   int i;
   for (i=0; i<no; ++i) {
-    if (i!=no-1) {
+    if (TGV==1) {
+      err = add_vagoon(x + i*len + start, h-TGVHEIGHT);
+    } else if (i!=no-1) {
       add_car(x + i*len + start, i+1, h-D51HEIGHT);
     } else {
       err = add_last_car(x + i*len + start, i+1, h-D51HEIGHT);
@@ -292,7 +306,9 @@ int add_locomotive_r(int (*func)(int), int len, int no, int x) {
 int add_cars_r(int start, int len, int no, int h, int x, int err) {
   int i;
   for (i=0; i<no; ++i) {
-    if (i!=no-1) {
+    if (TGV==1) {
+      err = add_vagoon_r(x - i*len + start, h-TGVHEIGHT);
+    } else if (i!=no-1) {
       add_car_r(x - i*len + start, i+1, h-D51HEIGHT);
     } else {
       err = add_last_car_r(x - i*len + start, i+1, h-D51HEIGHT);
@@ -743,6 +759,124 @@ int add_C51_r(int x)
         add_fdancer_r(y - 1, x - 47); add_mdancer_r(y - 1, x - 52);
     }
     add_smoke_r(y - 1, x - C51FUNNEL - 2);
+    return OK;
+}
+
+int add_TGV(int x)
+{
+    static char *tgv[TGVPATTERNS][TGVHEIGHT + 1]
+      = {{TGVSTR0, TGVSTR1, TGVSTR2, TGVSTR3, TGVSTR4, TGVSTR5, TGVSTR6,
+            TGVWHL1, TGVDEL},
+           {TGVSTR0, TGVSTR1, TGVSTR2, TGVSTR3, TGVSTR4, TGVSTR5, TGVSTR6,
+            TGVWHL2, TGVDEL}};
+    int y, i;
+
+    if (x < - TGVLENGTH)  return ERR;
+    y = LINES / 2 - 3;
+
+    if (FLY == 1) {
+        y = (x / 7) + LINES - (COLS / 7) - TGVHEIGHT;
+    }
+    for (i = 0; i <= TGVHEIGHT; ++i) {
+        my_mvaddstr(y + i, x, tgv[((TGVLENGTH + x) / 2) % TGVPATTERNS][i]);
+    }
+
+    if (ACCIDENT == 1) {
+        add_man(y + 2, x + 14);
+    }
+    if (DANCE == 1 && ACCIDENT ==0 && FLY == 0) {
+        add_fdancer(y - 1, x + 45); add_mdancer(y - 1, x + 50);
+    }
+    return OK;
+}
+
+int add_vagoon(int x, int i_diff)
+{
+    static char *vagoon[TGVHEIGHT + 1]
+        = {TGVVAG0, TGVVAG1, TGVVAG2, TGVVAG3, TGVVAG4, TGVVAG5, TGVVAG6, TGVVAG7, TGVDEL};
+
+    int y, i;
+
+    if (x < - TGVLENGTH)  return ERR;
+    y = LINES / 2 - 3;
+
+    if (FLY == 1) {
+        y = (x / 7) + LINES - (COLS / 7) - TGVHEIGHT;
+    }
+    for (i = 0; i <= TGVHEIGHT; ++i) {
+        my_mvaddstr(y + i_diff + i, x, vagoon[i]);
+    }
+    if (ACCIDENT == 1) {
+        add_man(y + i_diff + 3, x + 30);
+        add_man(y + i_diff + 3, x + 35);
+        add_man(y + i_diff + 3, x + 40);
+        add_man(y + i_diff + 3, x + 45);
+    }
+    if (DANCE == 1 && ACCIDENT ==0 && FLY == 0) {
+        add_fdancer(y - 1, x + 18); add_mdancer(y - 1, x + 23);
+        add_fdancer(y - 1, x + 31); add_mdancer(y - 1, x + 36);
+        add_fdancer(y - 1, x + 45); add_mdancer(y - 1, x + 50);
+    }
+    return OK;
+}
+
+int add_TGV_r(int x)
+{
+    static char *tgv[TGVPATTERNS][TGVHEIGHT + 1]
+      = {{TGVSTR0, TGVSTR1, TGVSTR2, TGVSTR3, TGVSTR4, TGVSTR5, TGVSTR6,
+            TGVWHL1, TGVDEL},
+           {TGVSTR0, TGVSTR1, TGVSTR2, TGVSTR3, TGVSTR4, TGVSTR5, TGVSTR6,
+            TGVWHL2, TGVDEL}};
+    int y, i;
+
+    if (x > TGVLENGTH + COLS)  return ERR;
+    if (x < -TGVLENGTH) return OK;
+    y = LINES / 2 - 3;
+
+    if (FLY == 1) {
+        y = -(x / 7) + LINES - (COLS / 7) - TGVHEIGHT;
+    }
+    for (i = 0; i <= TGVHEIGHT; ++i) {
+        my_mvaddstr_r(y + i, x, tgv[((TGVLENGTH + x) / 2) % TGVPATTERNS][i]);
+    }
+
+    if (ACCIDENT == 1) {
+        add_man(y + 2, x - 12);
+    }
+    if (DANCE == 1 && ACCIDENT ==0 && FLY == 0) {
+        add_fdancer_r(y - 1, x - 43); add_mdancer_r(y - 1, x - 48);
+    }
+    return OK;
+}
+
+int add_vagoon_r(int x, int i_diff)
+{
+    static char *vagoon[TGVHEIGHT + 1]
+        = {TGVVAG0, TGVVAG1, TGVVAG2, TGVVAG3, TGVVAG4, TGVVAG5, TGVVAG6, TGVVAG7, TGVDEL};
+
+    int y, i;
+
+    if (x > TGVLENGTH + COLS)  return ERR;
+    if (x < -TGVLENGTH) return OK;
+    y = LINES / 2 - 3;
+
+    if (FLY == 1) {
+        y = -(x / 7) + LINES - (COLS / 7) - TGVHEIGHT;
+    }
+    for (i = 0; i <= TGVHEIGHT; ++i) {
+        my_mvaddstr_r(y + i_diff + i, x, vagoon[i]);
+    }
+    if (ACCIDENT == 1) {
+        add_man(y + i_diff + 3, x - 28);
+        add_man(y + i_diff + 3, x - 33);
+        add_man(y + i_diff + 3, x - 38);
+        add_man(y + i_diff + 3, x - 43);
+    }
+    if (DANCE == 1 && ACCIDENT ==0 && FLY == 0) {
+        add_fdancer_r(y - 1, x - 16); add_mdancer_r(y - 1, x - 21);
+        add_fdancer_r(y - 1, x - 29); add_mdancer_r(y - 1, x - 34);
+        add_fdancer_r(y - 1, x - 43); add_mdancer_r(y - 1, x - 48);
+    }
     return OK;
 }
 
