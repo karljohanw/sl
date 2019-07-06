@@ -39,6 +39,7 @@
 /*                                              by Toyoda Masashi 1992/12/11 */
 
 #include <curses.h>
+#include <limits.h>
 #include <signal.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -87,6 +88,7 @@ unsigned int WAIT_TIME = 0;
 int CROSS     = 0;
 int ONEDIREC  = 1;
 int EVIL      = 0;
+int DISCO     = 0;
 
 int my_mvaddstr(int y, int x, char *str)
 {
@@ -154,6 +156,7 @@ void option(char *str)
             case 'C': CROSS    = 1; break;
             case 'R': ONEDIREC = 0; break;
             case 'e': EVIL     = 1; break;
+            case 'D': DISCO    = 1; break;
             default:                break;
         }
     }
@@ -171,6 +174,16 @@ int main(int argc, char *argv[])
         }
     }
     initscr();
+    if (DISCO == 1) {
+        start_color();
+        init_pair(7, COLOR_WHITE, COLOR_BLACK);
+        init_pair(6, COLOR_MAGENTA, COLOR_BLACK);
+        init_pair(5, COLOR_BLUE, COLOR_BLACK);
+        init_pair(4, COLOR_RED, COLOR_BLACK);
+        init_pair(3, COLOR_YELLOW, COLOR_BLACK);
+        init_pair(2, COLOR_GREEN, COLOR_BLACK);
+        init_pair(1, COLOR_CYAN, COLOR_BLACK);
+    }
     if (EVIL==1) {
         signal(SIGINT, SIG_IGN);
     }
@@ -188,6 +201,8 @@ int main(int argc, char *argv[])
       begin_gate(3 * COLS / 10, 0);
     }
     for (x = COLS - 1; ; --x) {
+        if (DISCO && (x + INT_MAX/2) % 7 == 2)
+            attron(COLOR_PAIR((x + INT_MAX/2) / 16 % 7 + 1));
         if (LOGO == 1) {
             if (add_sl(x, CARS) == ERR) break;
         }
@@ -209,6 +224,8 @@ int main(int argc, char *argv[])
       x_gate(3*COLS/10, 0);
     }
     for (x = 0; ; ++x) {
+        if (DISCO && (x + INT_MAX/2) % 7 == 2)
+            attron(COLOR_PAIR((x + INT_MAX/2) / 16 % 7 + 1));
         if (LOGO == 1) {
             if (add_sl_r(x, CARS) == ERR) break;
         }
@@ -861,7 +878,7 @@ int add_smoke_r(int y, int x)
      2,  2, 2, 3, 3, 3             };
      int i;
 
-     if (x > 2 * COLS) {
+    if (x > 2 * COLS) {
       return 0;
     }
     if (x % 4 == 0) {
