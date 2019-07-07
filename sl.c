@@ -87,7 +87,7 @@ int FLY       = 0;
 int C51       = 0;
 int DANCE     = 0;
 int LOCOMOTIVES = 1;
-int CARS      = 0;
+int CARS      = -1;
 unsigned int WAIT_TIME = 0;
 int CROSS     = 0;
 int ONEDIREC  = 1;
@@ -183,6 +183,9 @@ void option(char *str)
             case 'r': RAINBOW  = 1; break;
             default:                break;
         }
+    }
+    if (CARS==-1) {
+        CARS = (LOGO || TGV);
     }
 }
 
