@@ -181,6 +181,12 @@ void option(char *str)
             case 'D': DISCO    = 1; break;
             case 'G': TGV      = 1; break;
             case 'r': RAINBOW  = 1; break;
+            case 'h':
+                LOCOMOTIVES = 3;
+                CARS = rand()%21 + 10;
+                ONEDIREC = rand()%2;
+                CROSS = 1;
+                break;
             default:                break;
         }
     }
